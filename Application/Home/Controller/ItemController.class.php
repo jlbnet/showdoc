@@ -132,6 +132,7 @@ class ItemController extends BaseController {
         $item_id = I("item_id/d");
         $item_domain = I("item_domain/s");
         $current_page_id = I("page_id/d");
+        $current_file_id = I("file_id/d");
         //判断个性域名
         if ($item_domain) {
             $item = D("Item")->where("item_domain = '%s'",array($item_domain))->find();
@@ -163,6 +164,7 @@ class ItemController extends BaseController {
         $item_id = $item['item_id'];
 
         $current_page_id = I("page_id/d");
+        $current_file_id = I("file_id/d");
         $keyword = I("keyword");
 
         $login_user = session("login_user");
@@ -224,6 +226,7 @@ class ItemController extends BaseController {
         
         $this->assign("help_url" , $help_url);
         $this->assign("current_page_id" , $current_page_id);
+        $this->assign("current_file_id" , $current_file_id);
         $this->assign("keyword" , $keyword);
         $this->assign("ItemPermn" , $ItemPermn);
         $this->assign("ItemCreator" , $ItemCreator);
@@ -241,6 +244,7 @@ class ItemController extends BaseController {
         $item_id = $item['item_id'];
 
         $current_page_id = I("page_id/d");
+        $current_file_id = I("file_id/d");
 
         $login_user = session("login_user");
         $uid = $login_user['uid'] ? $login_user['uid'] : 0 ;
@@ -256,6 +260,7 @@ class ItemController extends BaseController {
         $ItemCreator = $this->checkItemCreator($uid , $item_id);
 
         $this->assign("current_page_id" , $current_page_id);
+        $this->assign("current_file_id" , $current_file_id);
         $this->assign("ItemPermn" , $ItemPermn);
         $this->assign("ItemCreator" , $ItemCreator);
         $this->assign("share_url" , $share_url);

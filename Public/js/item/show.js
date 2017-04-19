@@ -3,16 +3,26 @@ $(function(){
 
   //自动根据url把当前菜单激活
   var current_page_id = $("#current_page_id").val();
+  var _type = 'page';
   //如果中没有指定page_id，则判断有没有父目录为0的页面，默认打开第一个
   if(!current_page_id) {
     current_page_id = $(".doc-left li").children("a").attr("data-page-id");
   };
-  if(current_page_id !=null && current_page_id.toString().length>0)
+  var current_file_id = $('#current_file_id').val();
+
+  if((current_page_id !=null && current_page_id.toString().length>0)
+    || (current_file_id !=null && current_file_id.toString().length>0) )
   {
     $(".doc-left li").each(function(){
       page_id = $(this).children("a").attr("data-page-id");
+      if(page_id == undefined) {
+        file_id = $(this).children("a").attr("data-file-id");
+      }
+      
       //如果链接中包含当前url的信息，两者相匹配
-      if (page_id !=null && page_id.toString().length>0 && page_id == current_page_id) {
+      if ( (page_id !=null && page_id.toString().length>0 && page_id == current_page_id) 
+          || (file_id !=null && file_id.toString().length>0 && file_id == current_file_id) 
+        ) {
         //激活菜单
         $(this).addClass("active");
         //如果该菜单是子菜单，则还需要把父菜单打开才行
@@ -25,7 +35,10 @@ $(function(){
             }
         };
           if (page_id != '' && page_id !='#') {
-              change_page(page_id)
+              change_page('page', page_id)
+          };
+          if (file_id != '' && file_id !='#') {
+              change_page('file', file_id)
           };
       };
     })
