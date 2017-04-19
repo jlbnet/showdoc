@@ -16,7 +16,7 @@ class PageController extends BaseController {
 
         $ItemPermn = $this->checkItemPermn($login_user['uid'] , $page['item_id']) ;
         $ItemCreator = $this->checkItemCreator($login_user['uid'],$page['item_id']);
-		$page['page_md_content'] = $page['page_content'];
+        $page['page_md_content'] = $page['page_content'];
 
         //$Parsedown = new \Parsedown();
         //$page['page_content'] = $Parsedown->text(htmlspecialchars_decode($page['page_content']));

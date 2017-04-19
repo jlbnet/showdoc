@@ -172,10 +172,12 @@ class ItemController extends BaseController {
         if ($keyword) {
             $keyword = \SQLite3::escapeString($keyword) ;
             $pages = D("Page")->where("item_id = '$item_id' and ( page_title like '%{$keyword}%' or page_content like '%{$keyword}%' ) ")->order(" `s_number` asc  ")->field("page_id,author_uid,cat_id,page_title,addtime")->select();
+            $pages = D("Files")->where("item_id = '$item_id' and ( file_title like '%{$keyword}%' ) ")->order(" `s_number` asc  ")->field("file_id,author_uid,cat_id,file_title,addtime")->select();
         
         }else{
             //获取所有父目录id为0的页面
             $pages = D("Page")->where("cat_id = '0' and item_id = '$item_id' ")->order(" `s_number` asc  ")->field("page_id,author_uid,cat_id,page_title,addtime")->select();
+            $files = D("Files")->where("cat_id = '0' and item_id = '$item_id' ")->order(" `s_number` asc  ")->field("file_id,author_uid,cat_id,file_title,addtime")->select();
             //获取所有二级目录
             $catalogs = D("Catalog")->where("item_id = '$item_id' and level = 2  ")->order(" `s_number` asc  ")->select();
             if ($catalogs) {
@@ -183,6 +185,9 @@ class ItemController extends BaseController {
                     //该二级目录下的所有子页面
                     $temp = D("Page")->where("cat_id = '$catalog[cat_id]' ")->order(" `s_number` asc  ")->field("page_id,author_uid,cat_id,page_title,addtime")->select();
                     $catalog['pages'] = $temp ? $temp: array();
+                    //该二级目录下的所有上传文件
+                    $temp = D("Files")->where("cat_id = '$catalog[cat_id]' ")->order(" `s_number` asc  ")->field("file_id,author_uid,cat_id,file_title,addtime")->select();
+                    $catalog['files'] = $temp ? $temp: array();
 
                     //该二级目录下的所有子目录
                     $temp = D("catalog")->where("parent_cat_id = '$catalog[cat_id]' ")->order(" `s_number` asc  ")->select();
@@ -190,9 +195,13 @@ class ItemController extends BaseController {
                     if($catalog['catalogs']){
                         //获取所有三级目录的子页面
                         foreach ($catalog['catalogs'] as $key3 => &$catalog3) {
-                            //该二级目录下的所有子页面
+                            //该三级目录下的所有子页面
                             $temp = D("Page")->where("cat_id = '$catalog3[cat_id]' ")->order(" `s_number` asc  ")->field("page_id,author_uid,cat_id,page_title,addtime")->select();
                             $catalog3['pages'] = $temp ? $temp: array();
+
+                            //该三级目录下的所有上传文件
+                            $temp = D("Files")->where("cat_id = '$catalog3[cat_id]' ")->order(" `s_number` asc  ")->field("file_id,author_uid,cat_id,file_title,addtime")->select();
+                            $catalog3['files'] = $temp ? $temp: array();
                         }                        
                     }               
                 }
@@ -221,6 +230,7 @@ class ItemController extends BaseController {
         $this->assign("share_url" , $share_url);
         $this->assign("catalogs" , $catalogs);
         $this->assign("pages" , $pages);
+        $this->assign("files", $files);
         $this->assign("item" , $item);
         $this->assign("login_user" , $login_user);
         $this->display("show_regular");

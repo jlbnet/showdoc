@@ -1,0 +1,57 @@
+<include file="Common/header" />
+<link href="__PUBLIC__/highlight/default.min.css" rel="stylesheet"> 
+<link href="__PUBLIC__/editor.md/css/editormd.css" rel="stylesheet">
+<link href="__PUBLIC__/css/page/index.css?v=1.12345" rel="stylesheet">
+
+<div class="doc-title-box">
+    	<span id="doc-title-span" class="dn"></span>
+    	<h3 id="page-title">{$file.file_title}</h3>
+  </div>
+<!-- 这里开始是内容 -->
+<div id="file_content" style=”width:90%;margin:0 auto;">
+  <form class="editormd-form">
+    <label>图片地址</label>
+    <input type="text" style="height:30px;width:600px;" data-url="" name="file_url" id="file_url" value="{$file.file_url}">
+        
+    <br>
+    <label>图片预览</label>
+    <img id="preview" width="600px" height="600px" src="{$file.file_url}" />
+  </form>
+</div>
+
+ <include file="Common/footer" />
+ <script src="__PUBLIC__/highlight/highlight.min.js"></script>
+
+ <script type="text/javascript">
+$(function(){
+
+    if( isMobile() || $(window).width() < 1000){
+          AdaptToMobile();
+      }
+
+    $(window).resize(function(){
+      if( isMobile()){
+          AdaptToMobile();
+      }
+
+      else if($(window).width() < 1000){
+          AdaptToMobile();
+      }else{
+        window.location.reload();
+      }
+    });
+
+});
+
+
+  function AdaptToMobile(){
+    $(".doc-container").css("width","90%");
+    $("#doc-body").css("width","90%");
+    $("#header").css("height","20px");
+    $(".doc-title-box").css("margin","20px 20px 0px 20px");
+    $("#footer").css("font-size","11pt");
+
+  }
+
+
+</script>

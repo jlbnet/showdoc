@@ -1,0 +1,117 @@
+<include file="Common/header" />
+<link href="__PUBLIC__/highlight/default.min.css" rel="stylesheet">
+
+<style type="text/css">
+body{
+    background: #F1F0F1;
+    height: auto;
+    overflow: auto;
+    margin: 0 auto;
+}
+
+#doc-body{
+	background-color: #fff;
+}
+
+.doc-container {
+    position: static;
+    -webkit-box-shadow: 0px 1px 6px #ccc;
+    -moz-box-shadow: 0px 1px 6px #ccc;
+    -ms-box-shadow: 0px 1px 6px #ccc;
+    -o-box-shadow: 0px 1px 6px #ccc;
+    box-shadow: 0px 1px 6px #ccc;
+    background-color: #fff;
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 20px;
+    width: 800px;
+    min-height: 500px;
+}
+
+#header{
+	height: 80px;
+}
+
+#doc-body{
+	width: 600px;
+  margin: 0 auto;
+}
+
+.doc-title-box{
+    height: auto;
+    margin: 30px 100px 10px 100px;
+    width: auto;
+    border-bottom: 1px solid #ebebeb;
+    padding-bottom: 10px;
+}
+#footer{
+	  margin: 0 auto;
+    width: 180px;
+    font-size: 8px;
+    color: #959595;
+}
+
+</style>
+
+<div id="header"></div>
+<div class="container doc-container">
+   <div class="doc-title-box">
+    	<span id="doc-title-span" class="dn"></span>
+    	<h3 id="doc-title">{$file.file_title}</h3>
+  </div>
+  <div id="doc-body" >
+
+	<div id="file_content" style=”width:90%;margin:0 auto;">
+  <form class="editormd-form">
+    <label>图片地址</label>
+    <input type="text" style="height:30px;width:600px;" data-url="" name="file_url" id="file_url" value="{$file.file_url}">
+        
+    <br>
+    <label>图片预览</label>
+    <img id="preview" width="600px" height="600px" src="{$file.file_url}" />
+  </form>
+</div>
+
+</div>
+  <div id="footer">
+    <if condition="! $login_user">
+      <div id="copyright-text">本页面使用<a href="https://www.showdoc.cc/">showdoc</a>编写
+    </if>
+  </div>
+
+
+ <include file="Common/footer" />
+ <script src="__PUBLIC__/highlight/highlight.min.js"></script>
+ 
+<script type="text/javascript">
+$(function(){
+
+    if( isMobile() || $(window).width() < 1000){
+          AdaptToMobile();
+      }
+
+    $(window).resize(function(){
+      if( isMobile()){
+          AdaptToMobile();
+      }
+
+      else if($(window).width() < 1000){
+          AdaptToMobile();
+      }else{
+        window.location.reload();
+      }
+    });
+
+});
+
+
+  function AdaptToMobile(){
+    $(".doc-container").css("width","90%");
+    $("#doc-body").css("width","90%");
+    $("#header").css("height","20px");
+    $(".doc-title-box").css("margin","20px 20px 0px 20px");
+    $("#footer").css("font-size","11pt");
+
+  }
+
+
+</script>

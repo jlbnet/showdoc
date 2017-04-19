@@ -1,0 +1,105 @@
+<include file="Common/header" />
+<link rel="stylesheet" href="__PUBLIC__/editor.md/css/editormd.css" />
+<link rel="stylesheet" href="__PUBLIC__/css/page/edit.css?1.1thirdef" />
+
+<div id="layout">
+    <!-- 顶部条 -->
+    <header class="row">
+        <div class="head-left  pull-left">
+            <ul class="inline">
+                <li>
+                    <input type="text" style="height:30px;" name="file_title" id="file_title" placeholder="{$Think.Lang.input_file_title}" value="{$file.file_title}" tabindex="1">
+                </li>
+                <li>
+                    {$Think.Lang.level_2_directory}：
+                    <select name="cat_id" id="cat_id" tabindex="2"></select>
+                </li>
+                <li id="li_parent_cat">
+                    {$Think.Lang.level_3_directory}：
+                    <select name="parent_cat_id" id="parent_cat_id" tabindex="3"></select>
+                </li>
+                <li>
+                    <input type="text" name="s_number" id="s_number" value="{$file.s_number}" placeholder="{$Think.Lang.s_number_explain}" title="{$Think.Lang.s_number_explain}"  tabindex="4" >
+                </li>
+                <li>
+                    <!-- 首次添加没有历史版本，不显示 -->
+                    <if condition="$file.file_id gt 0">
+                        <a href="?s=home/file/history&file_id={$file.file_id}">{$Think.Lang.history_version}</a>
+                        <else />
+                    </if>
+                </li>
+            </ul>
+        </div>
+        <div class="head-right pull-right">
+            <div class="btn-group" id="save-btn-group"> 
+                <button class="btn btn-primary" id="save">{$Think.Lang.save}</button>
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                <ul class="dropdown-menu" >
+                    <li><a href="#" id="add-file-comments">{$Think.Lang.add_file_comments}</a></li>
+                </ul>
+            </div>
+
+            <a href="?s=home/item/show&item_id={$item_id}&file_id={$file.file_id}" class="btn cancel">{$Think.Lang.cancel}</a>
+        </div>
+    </header>
+    <br>
+    
+    <div class="editormd-dialog-container" style="width:70%;margin:0 auto;">
+      <form action="?s=home/file/uploadImg&amp;guid=1492507098544" target="editormd-image-iframe" method="post" enctype="multipart/form-data" class="editormd-form">
+        <iframe name="editormd-image-iframe" id="editormd-image-iframe" guid="1492507098544"></iframe>
+        <label>图片地址</label>
+        <input type="text" style="height:30px;width:600px;" data-url="" name="file_url" id="file_url">
+        <div class="editormd-file-input">
+        <input type="file" id="editormd-image-file" name="editormd-image-file" accept="image/*">
+          <input type="submit" id="submit" value="本地上传">
+        </div>
+        <br>
+        <label>图片预览</label>
+        <img id="preview" width="600px" height="600px" src="Public/img/no_image.jpg" />
+      </form>
+      <!-- 用右上角的保存按纽，不用底部的确定
+      <div class="editormd-dialog-footer">
+        <button class="editormd-btn editormd-enter-btn">确定</button>
+        <button class="editormd-btn editormd-cancel-btn">取消</button>
+      </div>
+      --->
+    </div>
+    
+    <input type="hidden" id="item_id" value="{$item_id}">
+    <input type="hidden" id="file_id" value="{$file.file_id}">
+    <input type="hidden" id="file_comments" value="">
+    <input type="hidden" id="default_second_cat_id" value="{$default_second_cat_id}">
+    <input type="hidden" id="default_child_cat_id" value="{$default_child_cat_id}">
+</div>
+<!-- 模板存放的地方 -->
+<div id="api-doc-templ" style="display:none">
+    <include file="$api_doc_templ" />
+</div>
+<div id="database-doc-templ" style="display:none">
+    <include file="$database_doc_templ" />
+</div>
+
+<div id="json-templ" class="editormd-dialog editormd-preformatted-text-dialog" style="width: 780px; height: 540px;">
+
+ <div id="more-templ-modal" class="modal hide fade">
+  <div class="modal-header">
+    <h4>{$Think.Lang.saved_templ_list}</h4>
+  </div>
+  <table class="table table-hover" id="templ-table">
+
+
+  </table>
+
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">{$Think.Lang.close}</button>
+    </div>
+ </div>
+
+<include file="Common/footer" />
+<script src="__PUBLIC__/js/jquery.bootstrap-growl.min.js"></script>
+<script src="__PUBLIC__/js/jquery.hotkeys.js"></script>
+
+<script src="__PUBLIC__/js/file/upload.js"></script>
+<if condition="LANG_SET=='en-us'">
+    <script src="__PUBLIC__/editor.md/languages/en.js"></script>
+</if>

@@ -72,10 +72,11 @@ return array(
     'URL_MODEL' => 3 ,//URL兼容模式
     'URL_ROUTER_ON'   => true, 
     'URL_ROUTE_RULES'=>array(
-        ':id\d'               => 'Home/Item/show?item_id=:1',
-		':domain\s$'               => 'Home/Item/show?item_domain=:1',//item的个性域名
+        ':id\d'                   => 'Home/Item/show?item_id=:1',
+        ':domain\s$'              => 'Home/Item/show?item_domain=:1',//item的个性域名
         'uid/:id\d'               => 'Home/Item/showByUid?uid=:1',
-        'page/:id\d'               => 'Home/Page/single?page_id=:1',
+        'page/:id\d'              => 'Home/Page/single?page_id=:1',
+        'file/:id\d'              => 'Home/File/single?file_id=:1',
     ),
     'URL_CASE_INSENSITIVE'=>true,
     'SHOW_ERROR_MSG'        =>  true,    // 显示错误信息，这样在部署模式下也能显示错误

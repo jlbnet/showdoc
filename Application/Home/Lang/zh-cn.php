@@ -97,6 +97,7 @@ return array(
     'my_item'=>'我的项目',
     'new_page'=>'新建页面',
     'new_catalog'=>'新建目录',
+    'upload_file'=>'上传文件',
     'share_address_to_your_friends'=>'分享该接口地址给你的好友',
     'share'=>'分享',
     'copy_interface_to_new'=>'复制该页面到新页面',
@@ -169,6 +170,11 @@ return array(
     'history_page_content'=>'历史版本',
     'overview'=>'预览',
 
+    //file
+    'input_file_title'=>'请输入文件标题',
+    'add_file_comments'=>'添加文件注释',
+    'file_comments'=>'文件注释',
+    
     //user
     'login'=>'登录',
     'username'=>'用户名',
@@ -197,6 +203,7 @@ return array(
     'access_password_are_incorrect'=>'访问密码不正确',
     'verification_code_are_incorrect'=>'验证码不正确',
     'no_permissions_to_delete_page'=>'你无权限！此页面由{$author_username}创建',
+    'no_permissions_to_delete_file'=>'你无权限！此页面由{$author_username}创建',
     'delete_succeeded'=>'删除成功！',
     'delete_failed'=>'删除失败！',
     'register_succeeded'=>'注册成功！',

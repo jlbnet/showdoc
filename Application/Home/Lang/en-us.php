@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 return array(
 
     //Attorn
@@ -97,6 +97,7 @@ return array(
     'my_item'=>'My items',
     'new_page'=>'New page',
     'new_catalog'=>'New catalog',
+    'upload_file'=>'Upload File',
     'share_address_to_your_friends'=>'Share address to your friends',
     'share'=>'Share',
     'copy_interface_to_new'=>'Copy page  to new ',
@@ -167,19 +168,23 @@ return array(
     'cur_page_content'=>'The latest version ',
     'history_page_content'=>'History version',
     'overview'=>'Overview',
+    //file
+    'input_file_title'=>'Please enter a file title',
+    'add_file_comments'=>'Add File Comments',
+    'file_comments'=>'File comments',
     //user
     'login'=>'Login',
     'username'=>'Username',
     'password'=>'Passwod',
     'verification_code'=>'Verification code',
-    'no_account'=>'Go to register →',
+    'no_account'=>'Go to register >',
     'register_new_account'=>'Register new user',
     'username_description'=>'English name or Email',
     'password'=>'Passwod',
     'password_again'=>'Enter password again',
     'verification_code'=>'Verification code',
     'register'=>'Register',
-    'had_a_account'=>' Sign on right now→',
+    'had_a_account'=>' Sign on right now >',
     'update_personal_info'=>'Modify personal information',
     'new_password_description'=>'The new password',
     'old_password_description'=>'Original password',
@@ -195,6 +200,7 @@ return array(
     'access_password_are_incorrect'=>'Access password are incorrect',
     'verification_code_are_incorrect'=>'Verification code are incorrect',
     'no_permissions_to_delete_page'=>'No permissions！The page is created by {$author_username}',
+    'no_permissions_to_delete_file'=>'No permissions！The file is created by {$author_username}',
     'delete_succeeded'=>'Delete succeeded',
     'delete_failed'=>'Delete failed',
     'register_succeeded'=>'Register succeeded',

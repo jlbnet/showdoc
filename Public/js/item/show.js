@@ -115,44 +115,65 @@ $(function(){
     $(this).addClass("active");
     //获取对应的page_id
     page_id = $(this).children("a").attr("data-page-id");
-    page_title = $(this).children("a")[0].innerText;
-    if (page_id != '' && page_id != null  && page_id !='#') {
-        if (page_title != '' && page_title != null) {
-            document.title = page_title + " - ShowDoc";
-        }
-        change_page(page_id);
-        //如果是移动设备的话，则滚动页面
-        if( isMobile()){
-            mScroll("page-content");
-        }
-    };
+
+    var _type = 'page';
+    var _id = page_id;
+    if(page_id != null) { 
+      page_title = $(this).children("a")[0].innerText;
+      if (page_id != '' && page_id != null  && page_id !='#') {
+          if (page_title != '' && page_title != null) {
+              document.title = page_title + " - ShowDoc";
+          }
+      };
+    } else {
+      _type = 'file';
+      file_id = $(this).children("a").attr("data-file-id");
+      _id = file_id;
+      file_title = $(this).children("a")[0].innerText;
+      if (file_id != '' && file_id != null  && file_id !='#') {
+          if (file_title != '' && file_title != null) {
+              document.title = file_title + " - ShowDoc";
+          }
+      };
+    }
+
+    if(_id == undefined) return false; //无效连接，不用打开
+    change_page(_type, _id);
+    //如果是移动设备的话，则滚动页面
+    if( isMobile()){
+        mScroll("page-content");
+    }
+    
     return false;//禁止原有的href链接
   });
 
   //切换页面；
-  function change_page(page_id){
-      if(!page_id)return;
+  function change_page(_type, _id){
+      if(!_id)return;
       var item_id = $("#item_id").val();
       var item_domain = $("#item_domain").val();
       var base_url = $("#base_url").val();
-      var iframe_url =  base_url+"/home/page/index/page_id/"+page_id;
+      var iframe_url =  base_url+"/home/"+_type+"/index/"+_type+"_id/"+_id;
 
       $(".page-edit-link").show();
-      //$("#page-content").attr("src" , iframe_url);
-      $("#edit-link").attr("href" , base_url+"/home/page/edit/page_id/"+page_id);
-      $("#copy-link").attr("href" , base_url+"/home/page/edit/item_id/"+item_id+"/copy_page_id/"+page_id);
-      $("#delete-link").attr("href" , base_url+"/home/page/delete/page_id/"+page_id);
+      $("#edit-link").attr("href" , base_url+"/home/"+_type+"/edit/"+_type+"_id/"+_id);
+      $("#copy-link").attr("href" , base_url+"/home/"+_type+"/edit/item_id/"+item_id+"/copy_"+_type+"_id/"+_id);
+      if(_type == "file") {
+        //上传的文件不能复制
+        $("#copy-link").hide();
+      }
+      $("#delete-link").attr("href" , base_url+"/home/"+_type+"/delete/"+_type+"_id/"+_id);
       
       var domain = item_domain ? item_domain : item_id ;
       var cur_page_url =  window.location.protocol +"//"+window.location.host+base_url+"/"+domain;
       if(base_url.length == 0){
-        cur_page_url += "?page_id="+page_id;
+        cur_page_url += "?"+_type+"_id="+_id;
       }else{
-        cur_page_url += "&page_id="+page_id;
+        cur_page_url += "&"+_type+"_id="+_id;
       }
       $("#share-page-link").html(cur_page_url);
       history.replaceState(null, null, cur_page_url);
-      var single_page_url = window.location.protocol +"//"+window.location.host+base_url+"/page/"+page_id;
+      var single_page_url = window.location.protocol +"//"+window.location.host+base_url+"/"+_type+"/"+_id;
       $("#share-single-link").html(single_page_url);
 
       $("#qr-page-link").attr("src","?s=home/common/qrcode&size=3&url="+cur_page_url);

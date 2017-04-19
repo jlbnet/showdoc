@@ -1,0 +1,46 @@
+<include file="Common/header" />
+<link href="__PUBLIC__/diff/diffview.css" rel="stylesheet"> 
+
+<style type="text/css">
+body {
+	font-size: 12px;
+	font-family: Sans-Serif;
+}
+h2 {
+	margin: 0.5em 0 0.1em;
+	text-align: center;
+}
+.top {
+	text-align: center;
+}
+.textInput {
+	display: block;
+	width: 49%;
+	float: left;
+  text-align: center;
+}
+label:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.spacer {
+	margin-left: 10px;
+}
+.viewType {
+	font-size: 16px;
+	clear: both;
+	text-align: center;
+	padding: 1em;
+}
+</style>
+
+<div class="textInput">
+	<h2>{$Think.Lang.cur_page_content}</h2>
+	<img id="preview" width="400px" height="400px" src="{$cur_file_url}" />
+</div>
+<div class="textInput spacer">
+	<h2>{$Think.Lang.history_page_content}</h2>
+	<img id="preview_history" width="400px" height="400px" src="{$history_file_url}" />
+</div>
+
+ <include file="Common/footer" />
