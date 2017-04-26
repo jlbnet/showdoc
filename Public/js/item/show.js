@@ -13,6 +13,8 @@ $(function(){
   if((current_page_id !=null && current_page_id.toString().length>0)
     || (current_file_id !=null && current_file_id.toString().length>0) )
   {
+    var page_id = undefined;
+    var file_id = undefined;
     $(".doc-left li").each(function(){
       page_id = $(this).children("a").attr("data-page-id");
       if(page_id == undefined) {
