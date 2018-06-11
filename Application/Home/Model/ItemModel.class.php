@@ -178,5 +178,47 @@ class ItemModel extends BaseModel {
     public function copy($item_id,$uid,$item_name= '',$item_description= '',$item_password = '',$item_domain){
         return $this->import($this->export($item_id),$uid,$item_name,$item_description,$item_password,$item_domain);
     }
+
+    /**
+     * 获取关注列表及关注状态
+     * @param $type: 0 --- 根据uid判断该用户是否关注该页面
+     *               1 --- 查询关注列表
+     *               2 --- 返回0和1两种结果
+     * @param $page_type: 文档类型：page/file
+     * @param $page_id: 页面id
+     * @param $uid: 用户id
+     */
+    public function findWatched($type, $page_type, $page_id, $uid = null) {
+        $watched = false;
+        $users = array();
+        $condition = $page_type == "page" ? "page_id" : "file_id";
+        $table = $page_type == "page" ? "PageUser" : "FileUser";
+        $list = D($table)->where($condition." = '%s'", $page_id)->select();
+        $uids = array();
+
+        for ($i = 0; $i < count($list); $i++) { 
+            if ($list[$i]["uid"] == $uid) {
+                $watched = true;
+            }
+
+            array_push($uids, $list[$i]["uid"]);
+        }
+
+        if ($type != "0") {
+            $where["uid"] = array("in", $uids);
+            $users = D('User')->field("uid, username")->where($where)->select();
+        }
+        
+        if ($type == "0") {
+            return $watched;
+        } elseif ($type == "1") {
+            return $users;
+        } else {
+            return array(
+                "users" => $users,
+                "isWatched" => $watched
+            );
+        }
+    }
     
 }

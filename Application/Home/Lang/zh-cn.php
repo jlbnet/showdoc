@@ -100,6 +100,8 @@ return array(
     'upload_file'=>'上传文件',
     'share_address_to_your_friends'=>'分享该接口地址给你的好友',
     'share'=>'分享',
+    'watch'=>'关注',
+    'watched'=>'已关注',
     'copy_interface_to_new'=>'复制该页面到新页面',
     'copy'=>'复制',
     'edit_interface'=>'编辑页面',
@@ -185,6 +187,7 @@ return array(
     'username_description'=>'用户名（可填英文昵称或邮箱）',
     'password'=>'密码',
     'password_again'=>'再次输入密码',
+    'email'=>'个人邮箱地址',
     'verification_code'=>'验证码',
     'register'=>'注册',
     'had_a_account'=>'已有账号？马上去登录→',
@@ -216,6 +219,7 @@ return array(
     'modify_succeeded'=>'修改成功！',
     'modify_faild'=>'修改失败！',
     'old_password_incorrect'=>'原密码不正确',
+    'email_incorrect'=>'邮箱格式不正确',
     'logout_succeeded'=>'退出成功！',
 
     //error_message

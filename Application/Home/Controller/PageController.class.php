@@ -38,8 +38,8 @@ class PageController extends BaseController {
         $ItemPermn = $this->checkItemPermn($login_user['uid'] , $page['item_id']) ;
         $ItemCreator = $this->checkItemCreator($login_user['uid'],$page['item_id']);
 
-        $page['page_md_content'] = $page['page_content'];
-        //$page['page_html_content'] = $Parsedown->text(htmlspecialchars_decode($page['page_content']));
+        // $page['page_md_content'] = $page['page_content'];
+        // //$page['page_html_content'] = $Parsedown->text(htmlspecialchars_decode($page['page_content']));
         $this->assign("page" , $page);
         $this->assign("login_user" , $login_user);
         $this->display();
@@ -285,5 +285,73 @@ class PageController extends BaseController {
         $this->assign("cur_page_content" , $cur_page_content);
         $this->assign("history_page_content" , $history_page_content);
         $this->display(); 
+    }
+
+    // 关注与取消关注
+    public function watch() {
+        if (!IS_POST){
+            D("HttpStatus")->setStatus("405");
+            return;
+        }
+        
+        $login_user = $this->checkLogin(false);
+        // 读取application/json流
+        $json = file_get_contents('php://input');
+        $jsonInfo = (array)json_decode($json);
+        $page_id = $jsonInfo["id"];
+        $watch = $jsonInfo["state"];
+        
+        if (!$page_id) {
+            $data["errno"] = "400";
+            $data["message"] = "请求参数错误";
+            $this->ajaxReturn($data);
+            return;
+        }
+
+        $is_watched = D("Item")->findWatched("0", "page", $page_id, $login_user['uid']);
+
+        $data["errno"] = "200";
+        $data["message"] = "SUCCESS";
+
+        if ($is_watched && $watch == "1") {
+            $where["uid"] = $login_user['uid'];
+            $where["page_id"] = $page_id;
+            D("PageUser")->where($where)->delete();
+        } elseif (!$is_watched && $watch == "0") {
+            $add['uid'] = $login_user['uid'];
+            $add['page_id'] = $page_id;
+            M('PageUser')->data($add)->add();
+        }
+        
+        $data["data"] = D("Item")->findWatched("1", "page", $page_id, $login_user['uid']);
+        $this->ajaxReturn($data);
+    }
+
+    // 关注列表与当前用户关注状态
+    public function getWatchData() {
+        if (!IS_POST){
+            D("HttpStatus")->setStatus("405");
+            return;
+        }
+
+        $login_user = $this->checkLogin(false);
+        // 读取application/json流
+        $json = file_get_contents('php://input');
+        $jsonInfo = (array)json_decode($json);
+        $page_id = $jsonInfo["id"];
+        
+        if (!$page_id) {
+            $data["errno"] = "400";
+            $data["message"] = "请求参数错误";
+            $this->ajaxReturn($data);
+            return;
+        }
+        
+        $watch = D("Item")->findWatched("2", "page", $page_id, $login_user['uid']);
+
+        $data["errno"] = "200";
+        $data["message"] = "SUCCESS";
+        $data["data"] = $watch;
+        $this->ajaxReturn($data);
     }
 }

@@ -100,6 +100,8 @@ return array(
     'upload_file'=>'Upload File',
     'share_address_to_your_friends'=>'Share address to your friends',
     'share'=>'Share',
+    'watch'=>'Watch',
+    'watched'=>'Watched',
     'copy_interface_to_new'=>'Copy page  to new ',
     'copy'=>'Copy',
     'edit_interface'=>'Edit page',
@@ -182,6 +184,7 @@ return array(
     'username_description'=>'English name or Email',
     'password'=>'Passwod',
     'password_again'=>'Enter password again',
+    'email'=>'Enter your email address',
     'verification_code'=>'Verification code',
     'register'=>'Register',
     'had_a_account'=>' Sign on right now >',
@@ -213,6 +216,7 @@ return array(
     'modify_succeeded'=>'Modify succeeded',
     'modify_faild'=>'Modify failed',
     'old_password_incorrect'=>'The original password is not correct',
+    'email_incorrect'=>'The email address is not correct',
     'logout_succeeded'=>'Logout succeeded',
 
     //error_message

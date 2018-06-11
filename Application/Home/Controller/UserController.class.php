@@ -13,29 +13,33 @@ class UserController extends BaseController {
 			  $username = I("username");
 			  $password = I("password");
 			  $confirm_password = I("confirm_password");
-			  $v_code = I("v_code");
-			  if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
-		  		if ( $password != '' && $password == $confirm_password) {
-
-			  		if ( ! D("User")->isExist($username) ) {
-						$ret = D("User")->register($username,$password);
-						if ($ret) {
-					      $this->message(L('register_succeeded'),U('Home/User/login'));					    
+			  $email = I("email");
+				$v_code = I("v_code");
+				
+				if (D("User")->checkEmail($email)) {
+					if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
+						if ( $password != '' && $password == $confirm_password) {
+	
+							if ( ! D("User")->isExist($username) ) {
+								$ret = D("User")->register($username,$password, $email);
+								if ($ret) {
+									$this->message(L('register_succeeded'),U('Home/User/login'));					    
+								}else{
+									$this->message(L('username_or_password_incorrect'));
+								}
+							}else{
+								$this->message(L('username_exists'));
+							}
+	
 						}else{
-						  $this->message(L('username_or_password_incorrect'));
+							$this->message(L('code_much_the_same'));
 						}
-			  		}else{
-			  			$this->message(L('username_exists'));
-			  		}
-
-			  	}else{
-			  		$this->message(L('code_much_the_same'));
-			  	}
-			  }else{
-				    $this->message(L('verification_code_are_incorrect'));
-			  }
-			  
-
+					}else{
+							$this->message(L('verification_code_are_incorrect'));
+					}
+				} else {
+					$this->message(L('email_incorrect'));
+				}
 			}
 	}
 
@@ -134,20 +138,23 @@ class UserController extends BaseController {
 			$username = $user['username'];
 			$password = I("password");
 			$new_password = I("new_password");
-			$ret = D("User")->checkLogin($username,$password);
-			if ($ret) {
-					$ret = D("User")->updatePwd($user['uid'],$new_password);
+			$email = I("email");
+
+			if (D("User")->checkEmail($email)) {
+				$ret = D("User")->checkLogin($username,$password);
+				if ($ret) {
+					$ret = D("User")->updatePwd($user['uid'],$new_password, $email);
 					if ($ret) {
 						$this->message(L('modify_succeeded'),U("Home/Item/index"));
 					}else{
 						$this->message(L('modify_faild'));
-
 					}
-
 				}else{	
 					$this->message(L('old_password_incorrect'));
 				}
-
+			} else {
+				$this->message(L('email_incorrect'));
+			}
 		}
 	}
 

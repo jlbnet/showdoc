@@ -94,4 +94,5 @@ function AdaptToMobile(){
   $(".doc-title-box").css("margin","20px 20px 0px 20px");
   $("#footer").css("font-size","11pt");
   $(".tool-bar").hide();
+  $(".page-watch-container").hide();
 }

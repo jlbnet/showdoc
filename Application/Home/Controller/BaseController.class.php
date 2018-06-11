@@ -91,6 +91,28 @@ class BaseController extends Controller {
 		return false;
 	}
 
+	//判断某用户是否为项目创建者和项目成员,只要是项目相关人员才可以关注
+	protected function checkItemWatch($uid , $item_id){
+		if (!$uid) {
+			return false;
+		}
+
+		if (session("mamage_item_".$item_id)) {
+			return true;
+		}
+
+		$item = D("Item")->where("item_id = '%d' ",array($item_id))->find();
+		if ($item['uid'] && $item['uid'] == $uid) {
+			session("mamage_item_".$item_id , 1 );
+			return true;
+		}
+		$ItemMember = D("ItemMember")->where("item_id = '%d' and uid = '%d'",array($item_id,$uid))->find();
+		if ($ItemMember) {
+			return true;
+		}
+		return false;
+	}
+
 	//判断某用户是否有项目访问权限（公开项目的话所有人可访问，私有项目则项目成员、项目创建者和访问密码输入者可访问）
 	protected function checkItemVisit($uid , $item_id, $refer_url= ''){
 		if (session("visit_item_".$item_id)) {

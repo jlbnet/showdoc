@@ -2,6 +2,7 @@
 @charset "utf-8";
   body {
     font:14px/1.5 "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti;
+    overflow-y: auto;
 }
 
 .btn-primary{

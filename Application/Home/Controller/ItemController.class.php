@@ -217,6 +217,8 @@ class ItemController extends BaseController {
 
         $ItemCreator = $this->checkItemCreator($uid , $item_id);
 
+        $ItemWatch = $this->checkItemWatch($uid , $item_id);
+
         if (LANG_SET == 'en-us') {
             $help_url = "https://www.showdoc.cc/help-en";
         }
@@ -230,6 +232,7 @@ class ItemController extends BaseController {
         $this->assign("keyword" , $keyword);
         $this->assign("ItemPermn" , $ItemPermn);
         $this->assign("ItemCreator" , $ItemCreator);
+        $this->assign("ItemWatch" , $ItemWatch);
         $this->assign("share_url" , $share_url);
         $this->assign("catalogs" , $catalogs);
         $this->assign("pages" , $pages);
@@ -259,6 +262,8 @@ class ItemController extends BaseController {
 
         $ItemCreator = $this->checkItemCreator($uid , $item_id);
 
+        $watch = D("Item")->findWatched("2", "page", $page["page_id"], $login_user['uid']);
+
         $this->assign("current_page_id" , $current_page_id);
         $this->assign("current_file_id" , $current_file_id);
         $this->assign("ItemPermn" , $ItemPermn);
@@ -268,6 +273,8 @@ class ItemController extends BaseController {
         $this->assign("page" , $page);
         $this->assign("item" , $item);
         $this->assign("login_user" , $login_user);
+        $this->assign("users" , $watch['users']);
+        $this->assign("watched" , $watch['isWatched']);
         $this->display("show_single_page");
     }
     //删除项目

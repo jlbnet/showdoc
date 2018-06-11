@@ -4,15 +4,19 @@ h3{
 }
 
 body{
-	overflow-x:hidden;overflow-y:hidden;
 	font-size: 1rem;
 	line-height: 1.7em;
+	overflow-y: auto;
 }
 
 p{
 	margin: 0 0 20px;
 }
 
+
+.all{
+	padding: 30px;
+}
 li{
 	line-height: 30px;
 }
@@ -37,4 +41,8 @@ li{
     border-bottom: 1px solid #d9d9d9;
     padding-top: 30px;
     padding-bottom: 20px
+}
+.content{
+	padding: 20px;
+	overflow-y: auto;
 }

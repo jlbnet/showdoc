@@ -1,87 +1,230 @@
 <include file="Common/header" />
-<link href="__PUBLIC__/highlight/default.min.css" rel="stylesheet"> 
-<link href="__PUBLIC__/lightbox/css/lightbox.css?v=1.1234567" rel="stylesheet"> 
+<link href="__PUBLIC__/highlight/default.min.css" rel="stylesheet">
+<!-- <link href="__PUBLIC__/lightbox/css/lightbox.css?v=1.1234567" rel="stylesheet"> -->
 <link rel="stylesheet" href="__PUBLIC__/css/item/show_single_page.css" />
+<style>
+  .watch-icon {
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .container {
+    position: relative;
+  }
+
+  .page-watch-container {
+    position: absolute;
+    right: -120px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    top: 100px;
+    background: #f5f5f5;
+    overflow: hidden;
+    min-width: 80px;
+    box-shadow: 0px 1px 6px #ccc;
+  }
+
+  .page-watch-container h3 {
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+    margin: 5px 10px;
+  }
+
+  .page-watch-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ccc;
+  }
+
+  .page-watch-container ul li {
+    margin-bottom: 5px;
+    line-height: 1;
+  }
+</style>
 
 <div id="header">
 
 </div>
 <div class="container doc-container">
-   <div class="doc-title-box">
-      <span id="doc-title-span" class="dn"></span>
-      <h3 id="doc-title">{$page.page_title}</h3>
-      <ul class="tool-bar inline pull-right">
-        <li><a href="#" id="share">分享</a></li> 
-        <if condition="$ItemPermn">
+  <div class="doc-title-box">
+    <span id="doc-title-span" class="dn"></span>
+    <h3 id="doc-title">{$page.page_title}</h3>
+    <ul class="tool-bar inline pull-right">
+      <li>
+        <if condition="$watched">
+          <a href="javascript:;" class="btn btn-link watch-btn" data-watch="1" data-id="{$page.page_id}" >
+            <img src="__PUBLIC__/img/watched.png" class="watch-icon" />
+            <span>{$Think.Lang.watched}</span>
+          </a>
+          <else />
+          <a href="javascript:;" class="btn btn-link watch-btn" data-watch="0" data-id="{$page.page_id}">
+            <img src="__PUBLIC__/img/watch.png" class="watch-icon" />
+            <span>{$Think.Lang.watch}</span>
+          </a>
+        </if>
+      </li>
+      <li>
+        <a href="#" id="share">分享</a>
+      </li>
+      <if condition="$ItemPermn">
 
-        <li><a href="?s=/home/page/edit/page_id/{$page.page_id}">编辑</a></li>
         <li>
-            <div class="btn-group ">
-              <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
-                {$Think.Lang.item}
-                <span class="caret"></span>
-              </a>
+          <a href="?s=/home/page/edit/page_id/{$page.page_id}">编辑</a>
+        </li>
+        <li>
+          <div class="btn-group ">
+            <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
+              {$Think.Lang.item}
+              <span class="caret"></span>
+            </a>
             <ul class="dropdown-menu">
-            <!-- dropdown menu links -->
-               <li><a href="{:U('Home/Item/word',array('item_id'=>$item['item_id']))}">{$Think.Lang.export}</a></li>
-             <if condition="$ItemCreator">
-                <li><a href="{:U('Home/Item/setting',array('item_id'=>$item['item_id']))}">项目设置</a></li>          
+              <!-- dropdown menu links -->
+              <li>
+                <a href="{:U('Home/Item/word',array('item_id'=>$item['item_id']))}">{$Think.Lang.export}</a>
+              </li>
+              <if condition="$ItemCreator">
+                <li>
+                  <a href="{:U('Home/Item/setting',array('item_id'=>$item['item_id']))}">项目设置</a>
+                </li>
               </if>
-              <li><a href="{:U('Home/Item/index')}" >{$Think.Lang.goback}</a></li>
+              <li>
+                <a href="{:U('Home/Item/index')}">{$Think.Lang.goback}</a>
+              </li>
             </ul>
         </li>
         <else />
 
-          
-        </if>
 
+      </if>
+
+    </ul>
+
+
+
+    </div>
+    <div id="doc-body">
+
+      <div id="page_md_content">
+        <textarea style="display:none;">{$page.page_content}</textarea>
+      </div>
+
+      </textarea>
+    </div>
+    <!-- 已关注列表 -->
+    <div class="page-watch-container">
+      <h3>已关注：</h3>
+      <ul id="watchList">
+        <foreach name="users" item="user">
+          <li>{$user.username}</li>
+        </foreach>
       </ul>
-
-      
-
+    </div>
   </div>
-  <div id="doc-body" >
-
-  <div id="page_md_content" ><textarea style="display:none;">{$page.page_content}</textarea></div>
-
-    </textarea>
-  </div>
-
-</div>
   <div id="footer">
     <if condition="! $login_user">
-      <div id="copyright-text">本页面使用<a href="https://www.showdoc.cc/">showdoc</a>编写
+      <div id="copyright-text">本页面使用
+        <a href="https://www.showdoc.cc/">showdoc</a>编写
     </if>
     </div>
   </div>
 
-<!-- 分享项目框 -->
-<div class="modal hide fade" id="share-modal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>{$Think.Lang.share}</h3>
-  </div>
-  <div class="modal-body">
-  <div class="modal-body" style="text-align: center;">
-    <p>{$Think.Lang.item_address}：<code id="share-item-link">{$share_url}</code>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="copy-item-link">复制链接</a>
-  </p>
-    <p style="border-bottom: 1px solid #eee;"><img  alt="二维码" style="width:114px;height:114px;" src="?s=home/common/qrcode&size=3&url={$share_url}"> </p>
-  </div>
+  <!-- 分享项目框 -->
+  <div class="modal hide fade" id="share-modal">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>{$Think.Lang.share}</h3>
+    </div>
+    <div class="modal-body">
+      <div class="modal-body" style="text-align: center;">
+        <p>{$Think.Lang.item_address}：
+          <code id="share-item-link">{$share_url}</code>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="#" id="copy-item-link">复制链接</a>
+        </p>
+        <p style="border-bottom: 1px solid #eee;">
+          <img alt="二维码" style="width:114px;height:114px;" src="?s=home/common/qrcode&size=3&url={$share_url}"> </p>
+      </div>
 
+    </div>
   </div>
-</div>
- <include file="Common/footer" />
- <script src="__PUBLIC__/highlight/highlight.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/marked.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/prettify.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/flowchart.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/raphael.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/underscore.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/sequence-diagram.min.js"></script>
- <script src="__PUBLIC__/editor.md/lib/jquery.flowchart.min.js"></script>
- <script src="__PUBLIC__/editor.md/editormd.min.js"></script>
- <script src="__PUBLIC__/js/jquery.goup.min.js"></script>
- <script src="__PUBLIC__/lightbox/js/lightbox.js?a=abc"></script>
-<script src="__PUBLIC__/jquery.zclip/jquery.zclip.js"></script>
-<script src="__PUBLIC__/js/jquery.bootstrap-growl.min.js"></script>
-<script src="__PUBLIC__/js/item/show_single_page.js?a=ab"></script>
+  <include file="Common/footer" />
+  <script src="__PUBLIC__/highlight/highlight.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/marked.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/prettify.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/flowchart.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/raphael.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/underscore.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/sequence-diagram.min.js"></script>
+  <script src="__PUBLIC__/editor.md/lib/jquery.flowchart.min.js"></script>
+  <script src="__PUBLIC__/editor.md/editormd.min.js"></script>
+  <script src="__PUBLIC__/js/jquery.goup.min.js"></script>
+  <!-- <script src="__PUBLIC__/lightbox/js/lightbox.js?a=abc"></script> -->
+  <script src="__PUBLIC__/jquery.zclip/jquery.zclip.js"></script>
+  <script src="__PUBLIC__/js/jquery.bootstrap-growl.min.js"></script>
+  <script src="__PUBLIC__/js/item/show_single_page.js?a=ab"></script>
+  <script>
+    var url = '__PUBLIC__';
+    $(function () {
+      // 调整关注列表初始定位
+      $('.page-watch-container').css('right', -$('.page-watch-container').width() - 40 + 'px');
+
+      $('.watch-btn').click(function () {
+        var that = this;
+        var watch = $(this).data('watch');
+        $.ajax({
+          type: 'post',
+          url: "{:U('/Home/Page/watch')}", 
+          data: JSON.stringify({
+            id: $(this).data('id'),
+            state: watch
+          }),
+          contentType: 'application/json',
+          dataType: 'json',
+          success: function (res) {
+            console.log(res);
+            if (res.errno == '200') {
+              changeWatch(that, watch);
+              rerenderWatchList(res.data);
+            } else {
+              console.log(res.message);
+            }
+          }
+        })
+      })
+    })
+
+    function changeWatch(ctx, watch) {
+      var src = '/img/watch.png';
+      var text = '关注';
+
+      if (watch == '1') {
+        $(ctx).data('watch', '0');
+      } else {
+        src = '/img/watched.png';
+        text = '已关注';
+        $(ctx).data('watch', '1');
+      }
+
+      $(ctx).find('img').attr('src', url + src);
+      $(ctx).find('span').html(text);
+    }
+
+    function rerenderWatchList(data) {
+      var html = '';
+
+      for (var index = 0; index < data.length; index++) {
+        var person = data[index];
+        html += '<li>' + person.username + '</li>';
+      }
+
+      $('#watchList').html('');
+      $('#watchList').html(html);
+    }
+  </script>
