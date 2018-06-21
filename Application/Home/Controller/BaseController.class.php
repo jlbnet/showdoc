@@ -103,7 +103,6 @@ class BaseController extends Controller {
 
 		$item = D("Item")->where("item_id = '%d' ",array($item_id))->find();
 		if ($item['uid'] && $item['uid'] == $uid) {
-			session("mamage_item_".$item_id , 1 );
 			return true;
 		}
 		$ItemMember = D("ItemMember")->where("item_id = '%d' and uid = '%d'",array($item_id,$uid))->find();
