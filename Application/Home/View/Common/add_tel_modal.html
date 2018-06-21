@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="__PUBLIC__/css/toastr.css">
+<style>
+  input[type="text"].error {
+    border-color: rgba(255,0,0,0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(255,0,0,0.6);
+  }
+</style>
+<!-- 添加手机号弹窗 -->
+<div class="modal hide fade" id="telModal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>添加手机号</h3>
+  </div>
+  <div class="modal-body">
+    <p>关注功能需要绑定手机号，方便钉钉推送文档更新状态。</p>
+    <input type="text" placeholder="请输入手机号" class="tel-input" maxlength="11">
+    <p class="error-info" style="color: red"></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" id="cancelTel">取消</a>
+    <a href="#" class="btn btn-primary" id="saveTel">添加</a>
+  </div>
+</div>
+
+<script src="__PUBLIC__/js/common/toastr.min.js"></script>
+<script>
+  $(function() {
+    $('#saveTel').click(function() {
+      var tel = $('.tel-input').val();
+      if (!tel) {
+        showTelInputError('手机号不能为空');
+      } else if (!/^1[345678]{1}\d{9}$/.test(tel)) {
+        showTelInputError('手机号格式错误');
+      } else {
+        saveTel(tel);
+      }
+    });
+
+    $('#cancelTel').click(function() {
+      $('#telModal').modal('hide');
+    });
+
+    $('.tel-input').focus(function() {
+      closeTelInputError();
+    });
+
+    $('#telModal').on('hidden', function () {
+      $('.tel-input').val('');
+      closeTelInputError();
+    });
+
+    function saveTel(tel) {
+      $.ajax({
+        type: 'post',
+        url: $('#base_url').val() + '/Home/User/addTel',
+        data: JSON.stringify({
+          tel: tel
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (res) {
+          if (res.errno == '200') {
+            toastr.success('提示', '添加手机号成功');
+            closeTelInputError();
+            $('#telModal').modal('hide');
+          } else {
+            showTelInputError(res.message);
+          }
+        }
+      })
+    }
+
+    function showTelInputError(msg) {
+      $('.tel-input').addClass('error');
+      $('.error-info').html(msg);
+    }
+
+    function closeTelInputError() {
+      $('.tel-input').removeClass('error');
+      $('.error-info').html('');
+    }
+  })
+</script>

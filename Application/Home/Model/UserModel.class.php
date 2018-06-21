@@ -16,15 +16,25 @@ class UserModel extends BaseModel {
      * 注册新用户
      * 
      */
-    public function register($username,$password,$email){
+    public function register($username,$password,$email,$tel){
         $password = md5(base64_encode(md5($password)).'576hbgh6');
-        return $this->add(array('username'=>$username ,'password'=>$password , 'reg_time'=>time(), 'email'=>$email));
+        return $this->add(array(
+            'username'=>$username,
+            'password'=>$password, 
+            'reg_time'=>time(), 
+            'email'=>$email,
+            'tel'=>$tel
+        ));
     }
 
     //修改用户密码
-    public function updatePwd($uid, $password){
+    public function updatePwd($uid, $password, $email, $tel){
         $password = md5(base64_encode(md5($password)).'576hbgh6');
-        return $this->where("uid ='%d' ",array($uid))->save(array('password'=>$password, 'email'=>$email));   
+        return $this->where("uid ='%d' ",array($uid))->save(array('password'=>$password, 'email'=>$email, 'tel'=>$tel));   
+    }
+
+    public function addTel($uid, $tel) {
+        return $this->where("uid ='%d' ",array($uid))->save(array('tel'=>$tel));  
     }
 
     /**
@@ -57,6 +67,43 @@ class UserModel extends BaseModel {
         } else {
             return true;
         }
+    }
+
+    /**
+     * 手机号验证
+     * @param tel 手机号
+     * @return -1 --- 手机号格式错误
+     *         0  --- 一切正常
+     *         1  --- 已存在
+     */
+    public function checkTel($tel, $uid = null) {
+        $checkTel = '/^1[345678]{1}\d{9}$/';
+        if (!preg_match($checkTel, $tel)) {
+            return -1;
+        } else if ($this->checkExistTel($tel, $uid)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 验证手机号在数据库是否已存在
+     */
+    public function checkExistTel($tel, $uid) {
+        $where = array();
+        $where['tel'] = array('eq', $tel);
+        if ($uid) {
+            $where['uid'] = array('neq', $uid);
+        }
+        return $this->where($where)->select();
+    }
+
+    /**
+     * 用户是否有手机号
+     */
+    public function existTel($uid) {
+        return $this->where('uid=%s', $uid)->getField('tel');
     }
     
 }

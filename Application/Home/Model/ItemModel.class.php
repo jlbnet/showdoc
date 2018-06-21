@@ -181,12 +181,12 @@ class ItemModel extends BaseModel {
 
     /**
      * 获取关注列表及关注状态
-     * @param $type: 0 --- 根据uid判断该用户是否关注该页面
+     * @param type: 0 --- 根据uid判断该用户是否关注该页面
      *               1 --- 查询关注列表
      *               2 --- 返回0和1两种结果
-     * @param $page_type: 文档类型：page/file
-     * @param $page_id: 页面id
-     * @param $uid: 用户id
+     * @param page_type: 文档类型：page/file
+     * @param page_id: 页面id
+     * @param uid: 用户id
      */
     public function findWatched($type, $page_type, $page_id, $uid = null) {
         $watched = false;

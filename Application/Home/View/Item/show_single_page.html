@@ -155,6 +155,7 @@
     </div>
   </div>
   <include file="Common/footer" />
+  <include file="Common/add_tel_modal" />
   <script src="__PUBLIC__/highlight/highlight.min.js"></script>
   <script src="__PUBLIC__/editor.md/lib/marked.min.js"></script>
   <script src="__PUBLIC__/editor.md/lib/prettify.min.js"></script>
@@ -188,10 +189,11 @@
           contentType: 'application/json',
           dataType: 'json',
           success: function (res) {
-            console.log(res);
             if (res.errno == '200') {
               changeWatch(that, watch);
               rerenderWatchList(res.data);
+            } else if (res.errno == '406') {
+              $('#telModal').modal('show');
             } else {
               console.log(res.message);
             }

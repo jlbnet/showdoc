@@ -308,6 +308,15 @@ class PageController extends BaseController {
             return;
         }
 
+        $tel = D('User')->existTel($login_user['uid']);
+
+        if (empty($tel)) {
+            $data["errno"] = "406";
+            $data["message"] = "未绑定手机号";
+            $this->ajaxReturn($data);
+            return;
+        }
+
         $is_watched = D("Item")->findWatched("0", "page", $page_id, $login_user['uid']);
 
         $data["errno"] = "200";

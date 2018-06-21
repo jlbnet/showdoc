@@ -1,5 +1,6 @@
 //页面加载完就执行
 var TYPE = 'page'; // 当前文档类型
+
 $(function () {
   var base_url = $('#base_url').val();
   //自动根据url把当前菜单激活
@@ -172,6 +173,8 @@ $(function () {
     var base_url = $("#base_url").val();
     var iframe_url = base_url + "/home/" + _type + "/index/" + _type + "_id/" + _id;
 
+    $("#current_page_id").val(_id);
+
     $(".page-edit-link").show();
     $(".page-watch-container").show();
     $("#edit-link").attr("href", base_url + "/home/" + _type + "/edit/" + _type + "_id/" + _id);
@@ -334,12 +337,14 @@ $(function () {
         if (res.errno == '200') {
           changeWatch(!watch);
           rerenderWatchList(res.data);
+        } else if (res.errno == '406') {
+          $('#telModal').modal('show');
         } else {
           console.log(res.message);
         }
       }
     })
-  })
+  });
 
   // 获取当前页面的关注状态及列表
   function getWatchData(type, page_id) {
@@ -385,4 +390,6 @@ $(function () {
     $('#watchList').html('');
     $('#watchList').html(html);
   }
+
+  
 })

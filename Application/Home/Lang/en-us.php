@@ -185,6 +185,7 @@ return array(
     'password'=>'Passwod',
     'password_again'=>'Enter password again',
     'email'=>'Enter your email address',
+    'tel'=>'Enter your cell-phone number',
     'verification_code'=>'Verification code',
     'register'=>'Register',
     'had_a_account'=>' Sign on right now >',
@@ -217,6 +218,8 @@ return array(
     'modify_faild'=>'Modify failed',
     'old_password_incorrect'=>'The original password is not correct',
     'email_incorrect'=>'The email address is not correct',
+    'tel_incorrect'=>'The cell-phone number is not correct',
+    'tel_exist'=>'The cell-phone number has already existed',
     'logout_succeeded'=>'Logout succeeded',
 
     //error_message

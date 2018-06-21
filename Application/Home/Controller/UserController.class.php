@@ -7,40 +7,49 @@ class UserController extends BaseController {
 	//注册
 	public function register(){
 		if (!IS_POST) {
-			  $this->assign('CloseVerify',C('CloseVerify'));
-			  $this->display ();
-			}else{
-			  $username = I("username");
-			  $password = I("password");
-			  $confirm_password = I("confirm_password");
-			  $email = I("email");
-				$v_code = I("v_code");
-				
-				if (D("User")->checkEmail($email)) {
-					if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
-						if ( $password != '' && $password == $confirm_password) {
-	
-							if ( ! D("User")->isExist($username) ) {
-								$ret = D("User")->register($username,$password, $email);
-								if ($ret) {
-									$this->message(L('register_succeeded'),U('Home/User/login'));					    
-								}else{
-									$this->message(L('username_or_password_incorrect'));
-								}
-							}else{
-								$this->message(L('username_exists'));
-							}
-	
+			$this->assign('CloseVerify',C('CloseVerify'));
+			$this->display ();
+		}else{
+			$username = I("username");
+			$password = I("password");
+			$confirm_password = I("confirm_password");
+			$email = I("email");
+			$tel = I("tel");
+			$v_code = I("v_code");
+			
+			if (!D('User')->checkEmail($email)) {
+				return $this->message(L('email_incorrect'));
+			}
+
+			$check_tel_result = D('User')->checkTel($tel);
+			
+			if ($check_tel_result === -1) {
+				return $this->message(L('tel_incorrect'));
+			} else if ($check_tel_result === 1) {
+				return $this->message(L('tel_exist'));
+			}
+
+			if (C('CloseVerify') || $v_code && $v_code == session('v_code') ) {
+				if ( $password != '' && $password == $confirm_password) {
+
+					if ( ! D("User")->isExist($username) ) {
+						$ret = D("User")->register($username,$password, $email, $tel);
+						if ($ret) {
+							$this->message(L('register_succeeded'),U('Home/User/login'));					    
 						}else{
-							$this->message(L('code_much_the_same'));
+							$this->message(L('username_or_password_incorrect'));
 						}
 					}else{
-							$this->message(L('verification_code_are_incorrect'));
+						$this->message(L('username_exists'));
 					}
-				} else {
-					$this->message(L('email_incorrect'));
+
+				}else{
+					$this->message(L('code_much_the_same'));
 				}
+			}else{
+					$this->message(L('verification_code_are_incorrect'));
 			}
+		}
 	}
 
 
@@ -139,21 +148,30 @@ class UserController extends BaseController {
 			$password = I("password");
 			$new_password = I("new_password");
 			$email = I("email");
+			$tel = I("tel");
 
-			if (D("User")->checkEmail($email)) {
-				$ret = D("User")->checkLogin($username,$password);
+			if (!D('User')->checkEmail($email)) {
+				return $this->message(L('email_incorrect'));
+			}
+
+			$check_tel_result = D('User')->checkTel($tel, $user['uid']);
+			
+			if ($check_tel_result === -1) {
+				return $this->message(L('tel_incorrect'));
+			} else if ($check_tel_result === 1) {
+				return $this->message(L('tel_exist'));
+			}
+
+			$ret = D("User")->checkLogin($username,$password);
+			if ($ret) {
+				$ret = D("User")->updatePwd($user['uid'],$new_password, $email, $tel);
 				if ($ret) {
-					$ret = D("User")->updatePwd($user['uid'],$new_password, $email);
-					if ($ret) {
-						$this->message(L('modify_succeeded'),U("Home/Item/index"));
-					}else{
-						$this->message(L('modify_faild'));
-					}
-				}else{	
-					$this->message(L('old_password_incorrect'));
+					$this->message(L('modify_succeeded'),U("Home/Item/index"));
+				}else{
+					$this->message(L('modify_faild'));
 				}
-			} else {
-				$this->message(L('email_incorrect'));
+			}else{	
+				$this->message(L('old_password_incorrect'));
 			}
 		}
 	}
@@ -165,5 +183,39 @@ class UserController extends BaseController {
 		cookie('cookie_token',NULL);
 		session(null);
 		$this->message(L('logout_succeeded'),U('Home/index/index'));
+	}
+
+	public function addTel() {
+		$user = $this->checkLogin();
+		if (!IS_POST){
+			D("HttpStatus")->setStatus("405");
+			return;
+		}
+
+		$json = file_get_contents('php://input');
+		$jsonInfo = (array)json_decode($json);
+		$tel = $jsonInfo["tel"];
+		$check_tel_result = D('User')->checkTel($tel, $user['uid']);
+			
+		if ($check_tel_result === -1) {
+			$data["errno"] = "400";
+			$data["message"] = "手机号格式不正确";
+			$this->ajaxReturn($data);
+		} else if ($check_tel_result === 1) {
+			$data["errno"] = "400";
+			$data["message"] = "手机号已存在";
+			$this->ajaxReturn($data);
+		} else {
+			$ret = D("User")->addTel($user['uid'], $tel);
+			if ($ret) {
+				$data["errno"] = "200";
+				$data["message"] = "SUCCESS";
+				$this->ajaxReturn($data);
+			}else{
+				$data["errno"] = "500";
+				$data["message"] = "数据库添加异常";
+				$this->ajaxReturn($data);
+			}
+		}
 	}
 }

@@ -188,6 +188,7 @@ return array(
     'password'=>'密码',
     'password_again'=>'再次输入密码',
     'email'=>'个人邮箱地址',
+    'tel'=>'手机号',
     'verification_code'=>'验证码',
     'register'=>'注册',
     'had_a_account'=>'已有账号？马上去登录→',
@@ -220,6 +221,8 @@ return array(
     'modify_faild'=>'修改失败！',
     'old_password_incorrect'=>'原密码不正确',
     'email_incorrect'=>'邮箱格式不正确',
+    'tel_incorrect'=>'手机号格式不正确',
+    'tel_exist'=>'手机号已存在，请重新输入',
     'logout_succeeded'=>'退出成功！',
 
     //error_message
