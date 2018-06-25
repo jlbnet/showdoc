@@ -106,7 +106,8 @@ def main():
             #print page
             #print page_id, page['page_title'], page['author'], datetime.datetime.strftime(page['time'], '%Y-%m-%d %H:%M:%S')
             #查找关注的用户，取出用户名，加入 @
-            sql = 'select u.uid, username,email,tel from page_user p inner join user u on p.uid=u.uid'
+            sql = 'select u.uid, username,email,tel from page_user p inner join user u on p.uid=u.uid and p.page_id=%d' % page_id
+            #print sql
             rows = qry.opensql(sql)
             if rows == [] or rows == (): continue #无人关注
             for r in rows:
@@ -142,7 +143,7 @@ def main():
      "isAtAll": False
      }
     }
-  print msg
+  #print msg
   f = http.post(url, msg)
   #logger.info(u"发送钉钉群消息结果: %d" % f.status_code)
   logger.info(u"stop check showdoc")
