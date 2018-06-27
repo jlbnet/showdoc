@@ -47,7 +47,7 @@ def main():
   #today = datetime.datetime.strptime(stoday, '%Y-%m-%d')
   yesterday = datetime.datetime.now() + datetime.timedelta(days=-1);
   syesterday = datetime.datetime.strftime(yesterday, '%Y-%m-%d')
-  #syesterday = '2018-06-01'
+  #syesterday = '2018-06-22'
 
   yesterday = datetime.datetime.strptime(syesterday, '%Y-%m-%d')
   #print today, yesterday
@@ -87,7 +87,7 @@ def main():
         if not item_id in pagelist.keys():
             pagelist[item_id] = {}
         pagelist[item_id][page_id] = new
-  
+  #print pagelist 
   text = ''
   atTel = []
   atUser = []
@@ -105,6 +105,9 @@ def main():
             page = pagelist[item_id][page_id]
             #print page
             #print page_id, page['page_title'], page['author'], datetime.datetime.strftime(page['time'], '%Y-%m-%d %H:%M:%S')
+            #增加跳转链接
+            text = text + u"- **[%s](http://192.168.10.114:5000/showdoc/index.php?s=/%d&page_id=%d)** \n ###### %s, 修改时间: %s\n" %(page['page_title'], page['item_id'], page_id, page['author'],datetime.datetime.strftime(page['time'], '%Y-%m-%d %H:%M:%S'))
+            
             #查找关注的用户，取出用户名，加入 @
             sql = 'select u.uid, username,email,tel from page_user p inner join user u on p.uid=u.uid and p.page_id=%d' % page_id
             #print sql
@@ -120,8 +123,7 @@ def main():
                     atTel.append(tel)
                 #if not username in atUser:
                 #    atUser.append(username)
-            #增加跳转链接
-            text = text + u"- **[%s](http://192.168.10.114:5000/showdoc/index.php?s=/%d&page_id=%d)** \n ###### %s, 修改时间: %s\n" %(page['page_title'], page['item_id'], page_id, page['author'],datetime.datetime.strftime(page['time'], '%Y-%m-%d %H:%M:%S'))
+  #print '---------------------------------------------'
   #print text
   #print atTel
   #text = ''
